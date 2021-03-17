@@ -3,7 +3,7 @@ import { InvalidParamError, MissingParamError } from '../../errors'
 import { badRequest, serverError } from '../../helper/httpHelper'
 import { SignupDTO } from './signup.dto'
 
-export class SignupController implements Controller {
+export class SignupController implements Controller<AccountModel> {
   private readonly emailValidator: EmailValidator
   private readonly addAccount: AddAccount
 
@@ -12,7 +12,7 @@ export class SignupController implements Controller {
     this.addAccount = addAccount
   }
 
-  handle (httpRequest: HttpRequest): HttpResponse<AccountModel | Error> {
+  async handle (httpRequest: HttpRequest): Promise<HttpResponse<AccountModel | Error>> {
     try {
       const requiredFields: (keyof SignupDTO)[] = ['name', 'email', 'password', 'passwordConfirmation']
 
@@ -31,7 +31,7 @@ export class SignupController implements Controller {
         return badRequest(new InvalidParamError('email'))
       }
 
-      const account = this.addAccount.add({ email, name, password })
+      const account = await this.addAccount.add({ email, name, password })
 
       return {
         statusCode: 200,
