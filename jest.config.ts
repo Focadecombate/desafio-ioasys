@@ -1,5 +1,8 @@
 export default {
 
+  transform: {
+    '.+\\ts$': 'ts-jest'
+  },
   collectCoverageFrom: ['<rootDir/src/**/*.ts>'],
   coverageDirectory: 'coverage',
   coveragePathIgnorePatterns: [
