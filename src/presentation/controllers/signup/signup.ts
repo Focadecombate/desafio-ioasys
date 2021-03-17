@@ -1,6 +1,6 @@
 import { InvalidParamError } from '../../errors/invalid-param-error'
 import { MissingParamError } from '../../errors/missing-param-error'
-import { BadRequest } from '../../helper/badRequest'
+import { badRequest, serverError } from '../../helper/httpHelper'
 import { Controller } from '../../protocols/controller'
 import { EmailValidator } from '../../protocols/email-validator'
 import { HttpRequest, HttpResponse } from '../../protocols/http'
@@ -13,21 +13,26 @@ export class SignupController implements Controller {
   }
 
   handle (httpRequest: HttpRequest): HttpResponse {
-    const requiredFields: (keyof SignupDTO)[] = ['name', 'email', 'password', 'passwordConfirmation']
+    try {
+      const requiredFields: (keyof SignupDTO)[] = ['name', 'email', 'password', 'passwordConfirmation']
 
-    for (const field of requiredFields) {
-      if (!httpRequest.body[field]) {
-        return BadRequest(new MissingParamError(field))
+      for (const field of requiredFields) {
+        if (!httpRequest.body[field]) {
+          return badRequest(new MissingParamError(field))
+        }
       }
-    }
-    if (httpRequest.body.password !== httpRequest.body.passwordConfirmation) {
-      return BadRequest(new Error('passwords dont match'))
-    }
+      if (httpRequest.body.password !== httpRequest.body.passwordConfirmation) {
+        return badRequest(new Error('passwords dont match'))
+      }
 
-    const { email } = httpRequest.body as SignupDTO
+      const { email } = httpRequest.body as SignupDTO
 
-    if (!this.emailValidator.isValid(email)) {
-      return BadRequest(new InvalidParamError('email'))
+      if (!this.emailValidator.isValid(email)) {
+        return badRequest(new InvalidParamError('email'))
+      }
+    } catch (error) {
+      console.log(error)
+      return serverError()
     }
   }
 }
