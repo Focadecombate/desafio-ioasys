@@ -1,4 +1,4 @@
-import { HttpRequest, HttpResponse, Controller, EmailValidator, AddAccount } from './signup-protocols'
+import { HttpRequest, HttpResponse, Controller, EmailValidator, AddAccount, AccountModel } from './signup-protocols'
 import { InvalidParamError, MissingParamError } from '../../errors'
 import { badRequest, serverError } from '../../helper/httpHelper'
 import { SignupDTO } from './signup.dto'
@@ -12,7 +12,7 @@ export class SignupController implements Controller {
     this.addAccount = addAccount
   }
 
-  handle (httpRequest: HttpRequest): HttpResponse {
+  handle (httpRequest: HttpRequest): HttpResponse<AccountModel | Error> {
     try {
       const requiredFields: (keyof SignupDTO)[] = ['name', 'email', 'password', 'passwordConfirmation']
 
@@ -31,7 +31,12 @@ export class SignupController implements Controller {
         return badRequest(new InvalidParamError('email'))
       }
 
-      this.addAccount.add({ email, name, password })
+      const account = this.addAccount.add({ email, name, password })
+
+      return {
+        statusCode: 200,
+        body: account
+      }
     } catch (error) {
       console.log(error)
       return serverError()
