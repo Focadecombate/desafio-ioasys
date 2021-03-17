@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "test": "jest --passWithNoTests",
-    "test:dev": "jest --passWithNoTests --watch",
+    "test:dev": "jest --passWithNoTests --watch --silent",
     "prepare": "husky install"
   },
   "author": "Gustavo Santos",
