@@ -1,8 +1,7 @@
 import { AuthenticationModel } from '../../../domain/usecases/authentication'
 import { HashComparer } from '../../protocols/cryptography/hash-comparer'
-import { TokenGenerator } from '../../protocols/cryptography/token-generator'
 import { LoadAccountByEmailRepository } from '../../protocols/db/load-account-by-email-repository'
-import { AccountModel } from '../add-account/db-add-account-protocols'
+import { AccountModel, Encrypter } from '../add-account/db-add-account-protocols'
 import { DbAuthentication } from './db-authentication'
 
 const makeFakeAccount = (): AccountModel => ({
@@ -29,9 +28,9 @@ const makeHashComparer = (): HashComparer => {
   }
   return new HashComparerStub()
 }
-const maketokenGeneratorStub = (): TokenGenerator => {
-  class TokenGeneratorStub implements TokenGenerator {
-    async generate (value: string): Promise<string> {
+const maketokenGeneratorStub = (): Encrypter => {
+  class TokenGeneratorStub implements Encrypter {
+    async encrypt (value: string): Promise<string> {
       return new Promise(resolve => resolve('token'))
     }
   }
@@ -100,13 +99,13 @@ describe('DbAuthentication UseCase', () => {
   })
   test('should call TokenGenerator with correct id', async () => {
     const { sut, tokenGeneratorStub } = makeSut()
-    const generateSpy = jest.spyOn(tokenGeneratorStub, 'generate')
+    const generateSpy = jest.spyOn(tokenGeneratorStub, 'encrypt')
     await sut.auth(makeFakeAuthentication())
     expect(generateSpy).toHaveBeenCalledWith('any_id')
   })
   test('should throw if HashComparer throw', async () => {
     const { sut, tokenGeneratorStub } = makeSut()
-    jest.spyOn(tokenGeneratorStub, 'generate')
+    jest.spyOn(tokenGeneratorStub, 'encrypt')
       .mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error(''))))
     const promise = sut.auth(makeFakeAuthentication())
     expect(promise).rejects.toThrow()
