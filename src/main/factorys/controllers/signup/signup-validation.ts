@@ -7,7 +7,7 @@ import {
   Validation,
   ValidationComposite,
   EmailValidatorAdapter
-} from './signup-validation-protocol'
+} from './protocols/signup-validation-protocol'
 
 export const makeSignupValidation = (): ValidationComposite => {
   const requiredFields: (keyof SignupDTO)[] = ['name', 'email', 'password', 'passwordConfirmation']
