@@ -1,4 +1,4 @@
-import { AddAccountRepository } from '../../protocols/add-account-repository'
+import { AddAccountRepository } from '../../protocols/db/add-account-repository'
 import { DbAddAccount } from './db-add-account'
 import { AccountModel, AddAccountModel, Encrypter } from './db-add-account-protocols'
 
@@ -18,7 +18,9 @@ const makeAddAccountRepository = (): AddAccountRepository => {
         name: 'valid_name',
         email: 'valid_email',
         password: '#hash',
-        id: 'valid_id'
+        id: 'valid_id',
+        isActive: true,
+        isAdmin: false
       }
       return new Promise(resolve => resolve(fakeAccount))
     }
@@ -107,12 +109,16 @@ describe('DbAddAccount Usecase', () => {
       password: 'valid_password'
     }
 
-    const accountPromisse = await sut.add(accountData)
-    await expect(accountPromisse).toEqual({
+    const validAccount: AccountModel = {
       id: 'valid_id',
       name: 'valid_name',
       email: 'valid_email',
-      password: '#hash'
-    })
+      password: '#hash',
+      isActive: true,
+      isAdmin: false
+    }
+
+    const accountPromisse = await sut.add(accountData)
+    await expect(accountPromisse).toEqual(validAccount)
   })
 })

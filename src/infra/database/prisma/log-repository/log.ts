@@ -1,4 +1,4 @@
-import { LogErrorRepository } from '../../../../data/protocols/log-error-repository'
+import { LogErrorRepository } from '../../../../data/protocols/db/log-error-repository'
 import { prisma } from '../utils/prisma-client'
 
 export class LogPrismaRepository implements LogErrorRepository {
