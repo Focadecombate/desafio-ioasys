@@ -6,9 +6,12 @@
   "scripts": {
     "start": "ts-node src/main/server.ts",
     "studio": "npx prisma studio",
-    "test": "jest --passWithNoTests",
-    "test:verbose": "jest --passWithNoTests --watch --verbose",
-    "test:dev": "jest --passWithNoTests --watch --silent",
+    "test": "jest --passWithNoTests --silent --noStackTrace",
+    "test:verbose": "jest --passWithNoTests",
+    "test:unit": "npm test -- --watch -c jest-unit-config.js ",
+    "test:integration": "npm test -- --watch --runInBand -c jest-integration-config.js ",
+    "test:staged": "npm test -- --findRelatedTests --runInBand",
+    "test:ci": "npm test -- --coverage --runInBand",
     "prepare": "husky install"
   },
   "author": "Gustavo Santos",
@@ -36,14 +39,12 @@
     "ts-node": "^9.1.1",
     "typescript": "^4.2.3"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
     "*.js": "eslint --cache --fix",
-    "*.ts": "eslint --cache --fix"
+    "*.ts": [
+      "npm test:staged",
+      "eslint --cache --fix"
+    ]
   },
   "dependencies": {
     "@prisma/client": "^2.19.0",
