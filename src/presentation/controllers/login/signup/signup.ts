@@ -3,12 +3,14 @@ import {
   HttpResponse,
   Controller,
   AddAccount,
-  Validation
+  Validation,
+  badRequest,
+  forbidden,
+  serverError
 } from './signup-protocols'
-import { badRequest, forbidden, serverError } from '../../helper/http/httpHelper'
 import { SignupDTO } from './signup.dto'
 import { Authentication } from '../login/login-protocols'
-import { EmailInUseError } from '../../errors'
+import { EmailInUseError } from '../../../errors'
 
 export class SignupController implements Controller<{ accessToken: string }> {
   constructor (
