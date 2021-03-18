@@ -4,7 +4,10 @@ import { HttpResponse } from '../protocols/http'
 export const badRequest = (error: Error): HttpResponse<Error> => (
   {
     statusCode: 400,
-    body: error
+    body: {
+      name: error.name,
+      message: error.message
+    }
   }
 )
 export const unauthorized = (): HttpResponse<Error> => ({
