@@ -39,4 +39,11 @@ describe('', () => {
     expect(account.email).toBe('any_email@mail.com')
     expect(account.password).toBe('any_password')
   })
+  test('should return null if loadByEmail fails', async () => {
+    const sut = new AccountPrismaRepository()
+
+    const account = await sut.loadByEmail('any_email@mail.com')
+
+    expect(account).toBeFalsy()
+  })
 })
