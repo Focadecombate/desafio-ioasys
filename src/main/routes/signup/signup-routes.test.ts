@@ -6,13 +6,7 @@ describe('Signup Routes', () => {
     await prismaHelper.connect()
   })
   beforeEach(async () => {
-    prismaHelper.prismaClient.user.deleteMany({
-      where: {
-        email: {
-          contains: 'any'
-        }
-      }
-    })
+    await prismaHelper.prismaClient.user.deleteMany()
   })
   afterAll(async () => {
     await prismaHelper.prismaClient.$disconnect()
