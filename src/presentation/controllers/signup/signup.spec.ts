@@ -22,7 +22,9 @@ const makeFakeAccount = (): AccountModel => ({
   name: 'valid_name',
   email: 'valid_email',
   password: 'valid_password',
-  id: 'valid_id'
+  id: 'valid_id',
+  isActive: true,
+  isAdmin: false
 })
 const makeValidationStub = (): Validation => {
   class ValidationStub implements Validation {

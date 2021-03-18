@@ -17,7 +17,6 @@ model Movie {
   title     String   @db.VarChar(255)
   content   String?
   published Boolean  @default(false)
-  author    User     @relation(fields: [authorId], references: [id])
   authorId  String
 }
 
@@ -28,7 +27,6 @@ model User {
   password String
   isAdmin  Boolean @default(false)
   isActive Boolean @default(true)
-  Movie    Movie[]
 }
 
 model Error {
