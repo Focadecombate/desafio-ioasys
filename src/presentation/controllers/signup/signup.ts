@@ -6,7 +6,7 @@ import {
   AccountModel,
   Validation
 } from './signup-protocols'
-import { badRequest, serverError } from '../../helper/httpHelper'
+import { badRequest, serverError } from '../../helper/http/httpHelper'
 import { SignupDTO } from './signup.dto'
 
 export class SignupController implements Controller<AccountModel> {
