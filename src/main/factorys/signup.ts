@@ -6,6 +6,7 @@ import { DbAddAccount } from '../../data/usecases/add-account/db-add-account'
 import { Controller } from '../../presentation/protocols'
 import { AccountModel } from '../../presentation/controllers/signup/signup-protocols'
 import { LogControllerDecorator } from '../decorators/log'
+import { LogPrismaRepository } from '../../infra/database/prisma/log-repository/log'
 
 export const makeSignupController = (): Controller<AccountModel> => {
   const salt = 12
@@ -14,5 +15,6 @@ export const makeSignupController = (): Controller<AccountModel> => {
   const dbAddAccount = new DbAddAccount(bcryptAdapter, addAccountRepository)
   const emailValidator = new EmailValidatorAdapter()
   const signupController = new SignupController(emailValidator, dbAddAccount)
-  return new LogControllerDecorator(signupController)
+  const logPrismaRepository = new LogPrismaRepository()
+  return new LogControllerDecorator(signupController, logPrismaRepository)
 }
