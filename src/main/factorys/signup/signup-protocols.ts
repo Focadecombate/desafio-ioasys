@@ -1,5 +1,5 @@
 export * from '../../../infra/database/prisma/account-repository/account'
-export * from '../../../infra/cryptography/bcrypt-adapter'
+export * from '../../../infra/cryptography/bcyprt/bcrypt-adapter'
 export * from '../../../presentation/controllers/signup/signup'
 export * from '../../../data/usecases/add-account/db-add-account'
 export * from '../../../presentation/protocols'
