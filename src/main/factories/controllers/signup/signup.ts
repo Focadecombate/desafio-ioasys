@@ -5,7 +5,9 @@ import {
   Controller
 } from './protocols/signup-protocols'
 import { makeSignupValidation } from './signup-validation'
+import { makeLogDecorator } from '../../decorators/log-factory'
 
 export const makeSignupController = (): Controller<{ accessToken: string }> => {
-  return new SignupController(makeAddAccount(), makeSignupValidation(), makeDbAuthentication())
+  const controller = new SignupController(makeAddAccount(), makeSignupValidation(), makeDbAuthentication())
+  return makeLogDecorator(controller)
 }

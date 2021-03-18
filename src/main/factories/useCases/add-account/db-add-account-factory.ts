@@ -4,5 +4,5 @@ export const makeAddAccount = () => {
   const salt = 12
   const addAccountRepository = new AccountPrismaRepository()
   const bcryptAdapter = new BcryptAdapter(salt)
-  return new DbAddAccount(bcryptAdapter, addAccountRepository)
+  return new DbAddAccount(bcryptAdapter, addAccountRepository, addAccountRepository)
 }

@@ -1,10 +1,11 @@
 import {
+  CompareFieldValidation,
   EmailValidation,
   RequiredFieldValidation,
   ValidationComposite,
   EmailValidator
-} from './protocols/login-validation-protocol'
-import { makeLoginValidation } from './login-validation-factory'
+} from './protocols/signup-validation-protocol'
+import { makeSignupValidation } from './signup-validation'
 
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorSub implements EmailValidator {
@@ -15,14 +16,16 @@ const makeEmailValidator = (): EmailValidator => {
 
   return new EmailValidatorSub()
 }
-
-jest.mock('../../../../presentation/helper/validators/validation-composite')
+jest.mock('../../../../validation/validators/validation-composite')
 describe('SignupValidation Factory', () => {
   test('should call ValidationComposite with all validations', () => {
-    makeLoginValidation()
+    makeSignupValidation()
     expect(ValidationComposite).toHaveBeenCalledWith([
+      new RequiredFieldValidation('name'),
       new RequiredFieldValidation('email'),
       new RequiredFieldValidation('password'),
+      new RequiredFieldValidation('passwordConfirmation'),
+      new CompareFieldValidation('password', 'passwordConfirmation'),
       new EmailValidation('email', makeEmailValidator())
     ])
   })
