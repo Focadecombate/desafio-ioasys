@@ -1,20 +1,20 @@
 module.exports = {
-  transform: {
-    '.+\\ts$': 'ts-jest'
-  },
+  roots: ['<rootDir>/src/'],
   collectCoverageFrom: [
-    '<rootDir/src/**/*.ts>',
-    '!<rootDir/src/main/**>'
+    '<rootDir>/src/**/*.ts',
+    '!<rootDir>/src/main/**',
+    '!<rootDir>/src/**/index.ts',
+    '!<rootDir>/src/**/*protocols.ts'
   ],
   coverageDirectory: 'coverage',
-  coveragePathIgnorePatterns: [
-    '/node_modules/'
-  ],
+  coverageProvider: 'babel',
+  testEnvironment: 'node',
   preset: 'ts-jest',
-  coverageProvider: 'v8',
   moduleFileExtensions: [
     'ts',
     'js'
   ],
-  testEnvironment: 'node'
+  transform: {
+    '.+\\.ts$': 'ts-jest'
+  }
 }
