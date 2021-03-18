@@ -5,6 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "start": "ts-node src/main/server.ts",
+    "studio": "npx prisma studio",
     "test": "jest --passWithNoTests",
     "test:verbose": "jest --passWithNoTests --watch --verbose",
     "test:dev": "jest --passWithNoTests --watch --silent",
