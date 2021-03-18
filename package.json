@@ -12,6 +12,7 @@
     "test:integration": "npm test -- --watch --runInBand -c jest-integration-config.js ",
     "test:staged": "npm test -- --findRelatedTests --runInBand",
     "test:ci": "npm test -- --coverage --runInBand",
+    "migrate": "npx prisma migrate dev --name",
     "prepare": "husky install"
   },
   "author": "Gustavo Santos",
@@ -44,7 +45,8 @@
     "*.ts": [
       "npm run test:staged",
       "eslint --cache --fix"
-    ]
+    ],
+    "*.prisma":"npx prisma format"
   },
   "dependencies": {
     "@prisma/client": "^2.19.0",
