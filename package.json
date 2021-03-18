@@ -6,6 +6,7 @@
   "scripts": {
     "start": "ts-node src/main/server.ts",
     "test": "jest --passWithNoTests",
+    "test:verbose": "jest --passWithNoTests --watch --verbose",
     "test:dev": "jest --passWithNoTests --watch --silent",
     "prepare": "husky install"
   },
@@ -48,6 +49,7 @@
     "@types/express": "^4.17.11",
     "bcrypt": "^5.0.1",
     "express": "^4.17.1",
+    "fast-glob": "^3.2.5",
     "validator": "^13.5.2"
   }
 }
