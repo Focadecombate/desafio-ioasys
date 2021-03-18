@@ -1,6 +1,5 @@
-import { Authentication, Controller, HttpRequest, HttpResponse, Validation } from './login-protocols'
+import { Authentication, AuthenticationModel, Controller, HttpRequest, HttpResponse, Validation } from './login-protocols'
 import { badRequest, ok, serverError, unauthorized } from '../../helper/http/httpHelper'
-import { LoginDTO } from './login.dto'
 
 export class LoginController implements Controller<{ accessToken: string }> {
   private readonly validation: Validation
@@ -18,9 +17,9 @@ export class LoginController implements Controller<{ accessToken: string }> {
         return badRequest(error)
       }
 
-      const { email, password } = httpRequest.body as LoginDTO
+      const authentication = httpRequest.body as AuthenticationModel
 
-      const accessToken = await this.authentication.auth(email, password)
+      const accessToken = await this.authentication.auth(authentication)
 
       if (!accessToken) {
         return unauthorized()
