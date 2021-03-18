@@ -1,10 +1,24 @@
-import { Validation } from '../../../protocols'
-import { Controller, HttpRequest, HttpResponse } from './add-movie-controller-protocols'
-
+import { Controller, HttpRequest, HttpResponse, Validation, AddMovie } from './add-movie-controller-protocols'
+import { badRequest, ok } from '../../login/signup/signup-protocols'
+import { AddMovieDTO } from './add-movie.dto'
 export class AddMovieController implements Controller<any> {
-  constructor (private readonly validation: Validation) { }
+  constructor (
+    private readonly validation: Validation,
+    private readonly addMovie: AddMovie
+  ) { }
+
   async handle (httpRequest: HttpRequest): Promise<HttpResponse<any>> {
-    this.validation.validate(httpRequest.body)
-    return new Promise((resolve) => resolve(null))
+    const error = this.validation.validate(httpRequest.body)
+    if (error) {
+      return badRequest(error)
+    }
+    const { authorName, description, published, title } = httpRequest.body as AddMovieDTO
+    await this.addMovie.add({
+      authorName,
+      description,
+      published,
+      title
+    })
+    return ok({})
   }
 }
