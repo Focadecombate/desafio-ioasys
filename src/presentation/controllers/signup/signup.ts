@@ -1,35 +1,32 @@
-import { HttpRequest, HttpResponse, Controller, EmailValidator, AddAccount, AccountModel } from './signup-protocols'
-import { InvalidParamError, MissingParamError } from '../../errors'
+import {
+  HttpRequest,
+  HttpResponse,
+  Controller,
+  AddAccount,
+  AccountModel,
+  Validation
+} from './signup-protocols'
 import { badRequest, serverError } from '../../helper/httpHelper'
 import { SignupDTO } from './signup.dto'
 
 export class SignupController implements Controller<AccountModel> {
-  private readonly emailValidator: EmailValidator
   private readonly addAccount: AddAccount
+  private readonly validation: Validation
 
-  constructor (emailValidator: EmailValidator, addAccount: AddAccount) {
-    this.emailValidator = emailValidator
+  constructor (addAccount: AddAccount, validation: Validation) {
     this.addAccount = addAccount
+    this.validation = validation
   }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse<AccountModel | Error>> {
     try {
-      const requiredFields: (keyof SignupDTO)[] = ['name', 'email', 'password', 'passwordConfirmation']
+      const error = this.validation.validate(httpRequest.body)
 
-      for (const field of requiredFields) {
-        if (!httpRequest.body[field]) {
-          return badRequest(new MissingParamError(field))
-        }
-      }
-      if (httpRequest.body.password !== httpRequest.body.passwordConfirmation) {
-        return badRequest(new Error('passwords dont match'))
+      if (error) {
+        return badRequest(error)
       }
 
       const { email, name, password } = httpRequest.body as SignupDTO
-
-      if (!this.emailValidator.isValid(email)) {
-        return badRequest(new InvalidParamError('email'))
-      }
 
       const account = await this.addAccount.add({ email, name, password })
 
