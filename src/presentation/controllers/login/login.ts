@@ -1,8 +1,6 @@
-import { Authentication } from '../../../domain/usecases/authentication'
+import { Authentication, Controller, HttpRequest, HttpResponse, EmailValidator } from './login-protocols'
 import { InvalidParamError, MissingParamError } from '../../errors'
 import { badRequest, ok, serverError, unauthorized } from '../../helper/httpHelper'
-import { Controller, HttpRequest, HttpResponse } from '../../protocols'
-import { EmailValidator } from '../signup/signup-protocols'
 import { LoginDTO } from './login.dto'
 
 export class LoginController implements Controller<any> {
@@ -35,9 +33,7 @@ export class LoginController implements Controller<any> {
         return unauthorized()
       }
 
-      return new Promise((resolve) => {
-        resolve(ok({}))
-      })
+      return ok({ accessToken })
     } catch (error) {
       return serverError(error)
     }
