@@ -1,7 +1,6 @@
-import { Authentication, Controller, HttpRequest, HttpResponse } from './login-protocols'
+import { Authentication, Controller, HttpRequest, HttpResponse, Validation } from './login-protocols'
 import { badRequest, ok, serverError, unauthorized } from '../../helper/httpHelper'
 import { LoginDTO } from './login.dto'
-import { Validation } from '../signup/signup-protocols'
 
 export class LoginController implements Controller<{ accessToken: string }> {
   private readonly validation: Validation

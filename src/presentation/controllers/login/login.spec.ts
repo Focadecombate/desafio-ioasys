@@ -41,7 +41,7 @@ const makeSut = () => {
 }
 
 describe('Login Controller', () => {
-  test('should return 500 if emailValidator throws', async () => {
+  test('should return 500 if validation throws', async () => {
     const { sut, validationStub } = makeSut()
 
     jest.spyOn(validationStub, 'validate').mockImplementationOnce(
