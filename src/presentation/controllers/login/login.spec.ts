@@ -1,5 +1,6 @@
+import { Authentication } from '../../../domain/usecases/authentication'
 import { InvalidParamError, MissingParamError } from '../../errors'
-import { badRequest, serverError } from '../../helper/httpHelper'
+import { badRequest } from '../../helper/httpHelper'
 import { EmailValidator } from '../signup/signup-protocols'
 import { LoginController } from './login'
 
@@ -19,10 +20,24 @@ const makeEmailValidator = (): EmailValidator => {
 
   return new EmaiValidatorStub()
 }
+const makeAuthentication = (): Authentication => {
+  class AuthenticationStub implements Authentication {
+    async auth (email: string, password: string): Promise<string> {
+      return new Promise((resolve) => resolve('token'))
+    }
+  }
+
+  return new AuthenticationStub()
+}
 
 const makeSut = () => {
   const emailValidatorStub = makeEmailValidator()
-  return { sut: new LoginController(emailValidatorStub), emailValidatorStub }
+  const authenticationStub = makeAuthentication()
+  return {
+    sut: new LoginController(emailValidatorStub, authenticationStub),
+    emailValidatorStub,
+    authenticationStub
+  }
 }
 
 describe('Login Controller', () => {
@@ -66,16 +81,14 @@ describe('Login Controller', () => {
     await sut.handle(makeFakeHttpRequest())
     expect(isValidSpy).toBeCalledWith('any_email@mail.com')
   })
-  test('should return 500 if emailValidator throws', async () => {
-    const { sut, emailValidatorStub } = makeSut()
+  test('should call Authentication with correct values', async () => {
+    const { sut, authenticationStub } = makeSut()
 
-    jest.spyOn(emailValidatorStub, 'isValid').mockImplementationOnce(
-      () => {
-        throw new Error('')
-      }
-    )
+    const authSpy = jest.spyOn(authenticationStub, 'auth')
 
-    const promise = await sut.handle(makeFakeHttpRequest())
-    expect(promise).toEqual(serverError(new Error('')))
+    const { email, password } = makeFakeHttpRequest().body
+
+    await sut.handle(makeFakeHttpRequest())
+    expect(authSpy).toBeCalledWith(email, password)
   })
 })
