@@ -39,18 +39,6 @@ const makeSut = () => {
 }
 
 describe('Login Controller', () => {
-  test('should return 500 if validation throws', async () => {
-    const { sut, validationStub } = makeSut()
-
-    jest.spyOn(validationStub, 'validate').mockImplementationOnce(
-      () => {
-        throw new Error('')
-      }
-    )
-
-    const promise = await sut.handle(makeFakeHttpRequest())
-    expect(promise).toEqual(serverError(new Error('')))
-  })
   test('should call validation with correct values', async () => {
     const { sut, validationStub } = makeSut()
 
