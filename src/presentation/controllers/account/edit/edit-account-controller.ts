@@ -1,5 +1,5 @@
 
-import { badRequest, Controller, HttpRequest, HttpResponse, ok, serverError, Validation } from '../../login/signup/signup-protocols'
+import { badRequest, conflict, Controller, HttpRequest, HttpResponse, ok, serverError, Validation } from '../../login/signup/signup-protocols'
 import { EditAccount } from '../../../../domain/usecases/edit-account'
 
 export class EditAccountController implements Controller<any> {
@@ -14,6 +14,9 @@ export class EditAccountController implements Controller<any> {
       const error = this.validation.validate(httpRequest.body)
       if (!error) {
         const account = await this.editAccount.edit(id, httpRequest.body)
+        if (!account) {
+          return conflict()
+        }
         return ok(account)
       }
       return badRequest(error)

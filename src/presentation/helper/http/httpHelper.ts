@@ -1,4 +1,5 @@
 import { ServerError, UnauthorizedError } from '../../errors/'
+import { ConflictError } from '../../errors/conflict-error'
 import { HttpResponse } from '../../protocols/http'
 
 export const badRequest = (error: Error): HttpResponse<Error> => (
@@ -34,5 +35,11 @@ export const noContent = (): HttpResponse<null> => (
   {
     statusCode: 204,
     body: null
+  }
+)
+export const conflict = (): HttpResponse<Error> => (
+  {
+    statusCode: 409,
+    body: new ConflictError()
   }
 )

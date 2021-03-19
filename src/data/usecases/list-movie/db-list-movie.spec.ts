@@ -3,6 +3,12 @@ import { ListMoviesModel } from '../../../domain/usecases/list-movies'
 import { MovieModel } from '../../../domain/models/movie'
 import { ListMovieRepository } from '../../protocols/db/movie/list-movie-repository'
 
+const makeFakeRequest = (): ListMoviesModel => ({
+  title: 'any_title',
+  diretor: 'any_description',
+  genre: 'any_genre',
+  actors: ['any_actor_name']
+})
 const makeFakeMovieData = (): MovieModel => ({
   id: 'any_movie_id',
   title: 'any_title',
@@ -29,14 +35,14 @@ describe('DbListMovie Usecase', () => {
   test('should call AddMovieRepository with correct values', async () => {
     const { sut, listMovieRepositoryStub } = makeSut()
     const listSpy = jest.spyOn(listMovieRepositoryStub, 'list')
-    await sut.list(makeFakeMovieData())
-    expect(listSpy).toHaveBeenCalledWith(makeFakeMovieData())
+    await sut.list(makeFakeRequest())
+    expect(listSpy).toHaveBeenCalledWith(makeFakeRequest())
   })
   test('should throw if listMovieRepository throws', () => {
     const { sut, listMovieRepositoryStub } = makeSut()
     jest.spyOn(listMovieRepositoryStub, 'list')
       .mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
-    const promise = sut.list(makeFakeMovieData())
+    const promise = sut.list(makeFakeRequest())
     expect(promise).rejects.toThrow()
   })
 })
