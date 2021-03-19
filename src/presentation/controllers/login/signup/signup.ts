@@ -27,9 +27,9 @@ export class SignupController implements Controller<{ accessToken: string }> {
         return badRequest(error)
       }
 
-      const { email, name, password } = httpRequest.body as SignupDTO
+      const { email, name, password, role } = httpRequest.body as SignupDTO
 
-      const account = await this.addAccount.add({ email, name, password })
+      const account = await this.addAccount.add({ email, name, password, role })
 
       if (!account) {
         return forbidden(new EmailInUseError())

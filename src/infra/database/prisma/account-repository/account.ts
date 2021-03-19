@@ -7,12 +7,13 @@ import { prisma } from '../utils/prisma-client'
 
 export class AccountPrismaRepository implements AddAccountRepository, LoadAccountByEmailRepository, LoadAccountByTokenRepository {
   async add (account: AddAccountModel): Promise<AccountModel> {
-    const { email, name, password } = account
+    const { email, name, password, role } = account
     const addedAccount = await prisma.user.create({
       data: {
         email,
         name,
-        password
+        password,
+        role
       }
     })
     return addedAccount
