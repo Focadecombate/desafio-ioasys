@@ -46,10 +46,19 @@ describe('Jwt Adapter', () => {
       await sut.decrypt('any_token')
       expect(verifySpy).toHaveBeenCalledWith('any_token', secretKey)
     })
-    test('should call verify with the right values', async () => {
+    test('should return right value', async () => {
       const { sut } = makeSut()
       const token = await sut.decrypt('any_token')
       expect(token).toBe('any_id')
+    })
+    test('should return null if verify returns null', async () => {
+      const { sut } = makeSut()
+      jest.spyOn(jwt, 'verify')
+        .mockImplementationOnce(() =>
+          new Promise(resolve => resolve(null))
+        )
+      const token = await sut.decrypt('any_token')
+      expect(token).toBeNull()
     })
     test('should throw if verify throws', async () => {
       const { sut } = makeSut()
