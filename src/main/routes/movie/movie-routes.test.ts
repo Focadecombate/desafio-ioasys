@@ -8,7 +8,9 @@ describe('Movie Routes', () => {
     await prismaHelper.connect()
   })
   beforeEach(async () => {
-    await prismaHelper.prismaClient.user.deleteMany()
+    await prismaHelper.prismaClient.user.deleteMany({})
+    await prismaHelper.prismaClient.actors.deleteMany({})
+    await prismaHelper.prismaClient.movie.deleteMany({})
   })
   afterAll(async () => {
     await prismaHelper.prismaClient.$disconnect()
@@ -50,6 +52,37 @@ describe('Movie Routes', () => {
           diretor: 'any_director'
         })
         .expect(204)
+    })
+  })
+  describe('GET /movie', () => {
+    test('should return 200 and a movie on success', async () => {
+      await prismaHelper.prismaClient.movie.create({
+        data: {
+          diretor: 'any_director',
+          genre: 'any_genre',
+          title: 'any_title',
+          actors: {
+            create: {
+              name: 'any_actor_name'
+            }
+          }
+        },
+        include: {
+          actors: true
+        }
+      })
+      const { body } = await request(app)
+        .get('/api/movie')
+        .query({ title: 'any_title' })
+        .expect(200)
+
+      expect(body).toBeTruthy()
+    })
+    test('should return 400 if there is no movie', async () => {
+      await request(app)
+        .get('/api/movie')
+        .query({ title: 'any_title' })
+        .expect(400)
     })
   })
 })

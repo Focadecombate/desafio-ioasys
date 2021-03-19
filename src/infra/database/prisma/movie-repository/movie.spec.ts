@@ -5,7 +5,7 @@ describe('', () => {
     await prismaHelper.connect()
   })
   beforeEach(async () => {
-    await prismaHelper.prismaClient.user.deleteMany({})
+    await prismaHelper.prismaClient.movie.deleteMany({})
   })
   afterAll(async () => {
     await prismaHelper.prismaClient.$disconnect()

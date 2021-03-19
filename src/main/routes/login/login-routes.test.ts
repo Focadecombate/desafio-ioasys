@@ -7,7 +7,7 @@ describe('Login Routes', () => {
     await prismaHelper.connect()
   })
   beforeEach(async () => {
-    await prismaHelper.prismaClient.user.deleteMany()
+    await prismaHelper.prismaClient.user.deleteMany({})
   })
   afterAll(async () => {
     await prismaHelper.prismaClient.$disconnect()

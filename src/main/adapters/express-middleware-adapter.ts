@@ -7,6 +7,7 @@ export const adaptMiddleware = (middleware: Middleware) => {
       headers: req.headers
     }
     const { body, statusCode } = await middleware.handle(httpRequest)
+
     if (statusCode === 200) {
       req.accountId = body.userId
       return Next()

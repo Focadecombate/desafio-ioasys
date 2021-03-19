@@ -6,5 +6,7 @@ export interface HttpResponse<T> {
 export interface HttpRequest {
   body?: any,
   accountId?: string,
-  headers?: any
+  headers?: any,
+  params?: any,
+  query?: any
 }

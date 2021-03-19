@@ -5,8 +5,11 @@ export const adaptRoute = <T>(controller: Controller<T>) => {
   return async (req: Request, res: Response) => {
     const httpRequest: HttpRequest = {
       body: req.body,
-      accountId: req?.accountId
+      accountId: req?.accountId,
+      query: req.query,
+      params: req.params
     }
+
     const { body, statusCode } = await controller.handle(httpRequest)
     if (statusCode === 200 || statusCode <= 299) {
       return res.status(statusCode).json(body)
