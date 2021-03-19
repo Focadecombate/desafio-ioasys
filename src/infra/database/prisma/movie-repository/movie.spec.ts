@@ -235,7 +235,37 @@ describe('', () => {
         title: 'any_title'
       })
       expect(movie.votes).toBeTruthy()
-      expect(movie.votes).toBeTruthy()
+      expect(movie.votes).toHaveLength(1)
+    })
+  })
+  describe('Detail()', () => {
+    test('should return an detailed movie on success', async () => {
+      const sut = new MoviePrismaRepository()
+      await prismaHelper.prismaClient.movie.create({
+        data: {
+          actors: {
+            create: {
+              name: 'any_actor_name'
+            }
+          },
+          diretor: 'any_director',
+          genre: 'any_genre',
+          title: 'any_title'
+        }
+      })
+      await sut.vote({
+        grade: 4,
+        title: 'any_title'
+      })
+      await sut.vote({
+        grade: 3,
+        title: 'any_title'
+      })
+      const detail = await sut.detail({
+        title: 'any_title'
+      })
+      expect(detail).toBeTruthy()
+      expect(detail.averageGrade).toBe(3.5)
     })
   })
 })

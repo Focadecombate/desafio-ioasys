@@ -17,7 +17,7 @@ model Movie {
   title     String   @unique @db.VarChar(255)
   diretor   String
   genre     String
-  votes     Vote?
+  votes     Vote[]
   actors    Actors[]
 }
 
@@ -29,10 +29,12 @@ model Actors {
 }
 
 model Vote {
-  id     String @id @default(uuid())
-  user   Movie  @relation(fields: [userId], references: [id])
-  userId String
-  grade  Int
+  id      String  @id @default(uuid())
+  user    User?   @relation(fields: [userId], references: [id])
+  userId  String?
+  movie   Movie?  @relation(fields: [movieId], references: [id])
+  movieId String?
+  grade   Int
 }
 
 model User {
@@ -40,6 +42,7 @@ model User {
   email    String  @unique
   name     String
   password String
+  votes    Vote[]
   role     String  @default("user")
   isActive Boolean @default(true)
 }

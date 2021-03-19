@@ -235,4 +235,57 @@ describe('Movie Routes', () => {
         .expect(500)
     })
   })
+  describe('POST /movie/details/:title', () => {
+    test('should return a detailied movie', async () => {
+      await prismaHelper.prismaClient.user.create({
+        data: {
+          id: 'any_user_id',
+          name: 'valid_name',
+          email: 'valid_email@email.com',
+          password: 'hashed_password'
+        }
+      })
+      await prismaHelper.prismaClient.user.create({
+        data: {
+          id: 'any_user_id2',
+          name: 'valid_name',
+          email: 'valid_email2@email.com',
+          password: 'hashed_password'
+        }
+      })
+      await prismaHelper.prismaClient.movie.create({
+        data: {
+          id: 'any_movie_id',
+          diretor: 'any_director',
+          genre: 'any_genre',
+          title: 'any_title',
+          actors: {
+            create: {
+              name: 'any_actor_name'
+            }
+          },
+          votes: {
+            create: [{
+              grade: 4,
+              userId: 'any_user_id'
+            },
+            {
+              grade: 2,
+              userId: 'any_user_id2'
+            }]
+          }
+        },
+        include: {
+          actors: true
+        }
+      })
+
+      const { body } = await request(app)
+        .get('/api/movie/details/any_title')
+        .expect(200)
+
+      expect(body).toBeTruthy()
+      expect(body.averageGrade).toBe(3)
+    })
+  })
 })
