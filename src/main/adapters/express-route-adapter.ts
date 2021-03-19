@@ -4,7 +4,8 @@ import { Controller, HttpRequest } from '../../presentation/protocols'
 export const adaptRoute = <T>(controller: Controller<T>) => {
   return async (req: Request, res: Response) => {
     const httpRequest: HttpRequest = {
-      body: req.body
+      body: req.body,
+      accountId: req?.accountId
     }
     const { body, statusCode } = await controller.handle(httpRequest)
     if (statusCode === 200 || statusCode <= 299) {

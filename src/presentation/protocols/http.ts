@@ -5,6 +5,6 @@ export interface HttpResponse<T> {
 
 export interface HttpRequest {
   body?: any,
-  accountId?: any,
+  accountId?: string,
   headers?: any
 }

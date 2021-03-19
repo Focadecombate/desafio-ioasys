@@ -96,4 +96,25 @@ describe('', () => {
       expect(account).toBeFalsy()
     })
   })
+  describe('Disable()', () => {
+    test('should set account to disable if id exists', async () => {
+      const sut = new AccountPrismaRepository()
+      await prismaHelper.prismaClient.user.create({
+        data: {
+          email: 'any_email@mail.com',
+          name: 'any_name',
+          password: 'hash_password',
+          id: 'any_token'
+        }
+      })
+      sut.disable('any_token')
+      const user = await prismaHelper.prismaClient.user.findUnique({ where: { id: 'any_token' } })
+      expect(user.isActive).toBe(false)
+    })
+    test('should throw if id doesnt exist', async () => {
+      const sut = new AccountPrismaRepository()
+      const promise = sut.disable('any_token')
+      expect(promise).rejects.toThrow()
+    })
+  })
 })

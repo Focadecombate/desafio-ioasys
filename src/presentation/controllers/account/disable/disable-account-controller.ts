@@ -9,7 +9,7 @@ export class DisableAccountController implements Controller<any> {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse<any>> {
     try {
-      const id = httpRequest.accountId
+      const id = httpRequest?.accountId
       await this.disableAccount.disable(id)
       return noContent()
     } catch (error) {

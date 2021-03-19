@@ -6,7 +6,7 @@
   "scripts": {
     "start": "ts-node src/main/server.ts",
     "studio": "npx prisma studio",
-    "test": "jest --passWithNoTests --silent --noStackTrace",
+    "test": "jest --passWithNoTests --noStackTrace",
     "test:verbose": "jest --passWithNoTests",
     "test:unit": "npm test -- --watch -c jest-unit-config.js ",
     "test:integration": "npm test -- --watch --runInBand -c jest-integration-config.js ",
