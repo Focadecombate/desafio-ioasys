@@ -1,5 +1,5 @@
-import { AddAccountRepository } from '../../protocols/db/add-account-repository'
-import { LoadAccountByEmailRepository } from '../../protocols/db/load-account-by-email-repository'
+import { AddAccountRepository } from '../../protocols/db/account/add-account-repository'
+import { LoadAccountByEmailRepository } from '../../protocols/db/account/load-account-by-email-repository'
 import { DbAddAccount } from './db-add-account'
 import { AccountModel, AddAccountModel, Encrypter } from './db-add-account-protocols'
 
@@ -20,7 +20,7 @@ const makeAddAccountRepository = (): AddAccountRepository => {
         password: '#hash',
         id: 'valid_id',
         isActive: true,
-        isAdmin: false
+        role: 'user'
       }
       return new Promise(resolve => resolve(fakeAccount))
     }
@@ -32,7 +32,7 @@ const makeFakeAccount = (): AccountModel => ({
   name: 'any_name',
   email: 'any_email@mail.com',
   isActive: true,
-  isAdmin: false,
+  role: 'user',
   password: 'hashed_password'
 })
 const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
@@ -133,7 +133,7 @@ describe('DbAddAccount Usecase', () => {
       email: 'valid_email',
       password: '#hash',
       isActive: true,
-      isAdmin: false
+      role: 'user'
     }
 
     const accountPromisse = await sut.add(accountData)

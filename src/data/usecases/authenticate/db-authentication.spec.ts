@@ -1,6 +1,6 @@
 import { AuthenticationModel } from '../../../domain/usecases/authentication'
 import { HashComparer } from '../../protocols/cryptography/hash-comparer'
-import { LoadAccountByEmailRepository } from '../../protocols/db/load-account-by-email-repository'
+import { LoadAccountByEmailRepository } from '../../protocols/db/account/load-account-by-email-repository'
 import { AccountModel, Encrypter } from '../add-account/db-add-account-protocols'
 import { DbAuthentication } from './db-authentication'
 
@@ -9,7 +9,7 @@ const makeFakeAccount = (): AccountModel => ({
   name: 'any_name',
   email: 'any_email',
   isActive: true,
-  isAdmin: false,
+  role: 'user',
   password: 'hashed_password'
 })
 const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
