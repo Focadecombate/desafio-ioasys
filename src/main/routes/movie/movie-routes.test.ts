@@ -10,6 +10,7 @@ describe('Movie Routes', () => {
   beforeEach(async () => {
     await prismaHelper.prismaClient.user.deleteMany({})
     await prismaHelper.prismaClient.actors.deleteMany({})
+    await prismaHelper.prismaClient.vote.deleteMany({})
     await prismaHelper.prismaClient.movie.deleteMany({})
   })
   afterAll(async () => {
@@ -83,6 +84,155 @@ describe('Movie Routes', () => {
         .get('/api/movie')
         .query({ title: 'any_title' })
         .expect(400)
+    })
+  })
+  describe('POST /movie/vote/:title', () => {
+    test('should vote if movie exists user is authenticated and role is user', async () => {
+      const password = await hash('123', 12)
+      await prismaHelper.prismaClient.user.create({
+        data: {
+          id: 'any_id',
+          name: 'valid_name',
+          email: 'valid_email@email.com',
+          password
+        }
+      })
+
+      const accessToken = sign({ id: 'any_id' }, 'secret_key')
+
+      await prismaHelper.prismaClient.movie.create({
+        data: {
+          diretor: 'any_director',
+          genre: 'any_genre',
+          title: 'any_title',
+          actors: {
+            create: {
+              name: 'any_actor_name'
+            }
+          }
+        },
+        include: {
+          actors: true
+        }
+      })
+
+      const { body } = await request(app)
+        .post('/api/movie/vote/any_title')
+        .set('authorization', accessToken)
+        .send({ grade: 4 })
+        .expect(200)
+
+      expect(body).toBeTruthy()
+    })
+    test('should not vote if movie exists user is authenticated and role is admin', async () => {
+      const password = await hash('123', 12)
+      await prismaHelper.prismaClient.user.create({
+        data: {
+          id: 'any_id',
+          name: 'valid_name',
+          email: 'valid_email@email.com',
+          password,
+          role: 'admin'
+        }
+      })
+
+      const accessToken = sign({ id: 'any_id' }, 'secret_key')
+
+      await prismaHelper.prismaClient.movie.create({
+        data: {
+          diretor: 'any_director',
+          genre: 'any_genre',
+          title: 'any_title',
+          actors: {
+            create: {
+              name: 'any_actor_name'
+            }
+          }
+        },
+        include: {
+          actors: true
+        }
+      })
+
+      await request(app)
+        .post('/api/movie/vote/any_title')
+        .set('authorization', accessToken)
+        .send({ grade: 4 })
+        .expect(403)
+    })
+    test('should not vote if movie exists user not is authenticated', async () => {
+      const password = await hash('123', 12)
+      await prismaHelper.prismaClient.user.create({
+        data: {
+          id: 'any_id',
+          name: 'valid_name',
+          email: 'valid_email@email.com',
+          password,
+          role: 'admin'
+        }
+      })
+
+      await prismaHelper.prismaClient.movie.create({
+        data: {
+          diretor: 'any_director',
+          genre: 'any_genre',
+          title: 'any_title',
+          actors: {
+            create: {
+              name: 'any_actor_name'
+            }
+          }
+        },
+        include: {
+          actors: true
+        }
+      })
+
+      await request(app)
+        .post('/api/movie/vote/any_title')
+        .send({ grade: 4 })
+        .expect(403)
+    })
+    test('should not vote if movie exists user dont exist', async () => {
+      await prismaHelper.prismaClient.movie.create({
+        data: {
+          diretor: 'any_director',
+          genre: 'any_genre',
+          title: 'any_title',
+          actors: {
+            create: {
+              name: 'any_actor_name'
+            }
+          }
+        },
+        include: {
+          actors: true
+        }
+      })
+
+      await request(app)
+        .post('/api/movie/vote/any_title')
+        .send({ grade: 4 })
+        .expect(403)
+    })
+    test('should not vote if movie dont exist', async () => {
+      const password = await hash('123', 12)
+      await prismaHelper.prismaClient.user.create({
+        data: {
+          id: 'any_id',
+          name: 'valid_name',
+          email: 'valid_email@email.com',
+          password
+        }
+      })
+
+      const accessToken = sign({ id: 'any_id' }, 'secret_key')
+
+      await request(app)
+        .post('/api/movie/vote/any_title')
+        .set('authorization', accessToken)
+        .send({ grade: 4 })
+        .expect(500)
     })
   })
 })

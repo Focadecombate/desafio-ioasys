@@ -14,6 +14,6 @@ export interface MovieModel {
   title: string;
   diretor: string;
   genre: string;
-  votes?: Vote[]
+  votes?: Vote[] | Vote
   actors: Actor[]
 }

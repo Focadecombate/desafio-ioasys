@@ -17,7 +17,7 @@ const makeEmailValidator = (): EmailValidator => {
 }
 
 jest.mock('../../../../../validation/validators/validation-composite')
-describe('SignupValidation Factory', () => {
+describe('LoginValidation Factory', () => {
   test('should call ValidationComposite with all validations', () => {
     makeLoginValidation()
     expect(ValidationComposite).toHaveBeenCalledWith([

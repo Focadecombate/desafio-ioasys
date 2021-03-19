@@ -1,9 +1,10 @@
 import { AddMovieRepository } from '../../../../data/protocols/db/movie/add-movie-repository'
 import { ListMovieRepository, ListMoviesModel, MovieModel } from '../../../../data/usecases/list-movie/db-list-movie-protocols'
+import { VoteMovieModel, VoteMovieRepository } from '../../../../data/usecases/vote-movie/db-vote-movie-protocols'
 import { AddMovieModel } from '../../../../domain/usecases/add-movie'
 import { prisma } from '../utils/prisma-client'
 
-export class MoviePrismaRepository implements AddMovieRepository, ListMovieRepository {
+export class MoviePrismaRepository implements AddMovieRepository, ListMovieRepository, VoteMovieRepository {
   async add (movie: AddMovieModel): Promise<null> {
     const { actors, diretor, genre, title } = movie
     await prisma.movie.create({
@@ -25,8 +26,6 @@ export class MoviePrismaRepository implements AddMovieRepository, ListMovieRepos
   async list (movie: ListMoviesModel): Promise<MovieModel[]> {
     const { actors, diretor, genre, title } = movie
 
-    const actorNames = actors?.map(item => item.name) as string[]
-
     const listMovies = await prisma.movie
       .findMany({
         where: {
@@ -37,7 +36,7 @@ export class MoviePrismaRepository implements AddMovieRepository, ListMovieRepos
             actors: {
               some: {
                 name: {
-                  in: actorNames
+                  in: actors
                 }
               }
             }
@@ -48,5 +47,26 @@ export class MoviePrismaRepository implements AddMovieRepository, ListMovieRepos
         }
       })
     return listMovies
+  }
+
+  async vote (movie: VoteMovieModel): Promise<MovieModel> {
+    const { grade, title } = movie
+    const updatedMovie = await prisma.movie.update({
+      data: {
+        votes: {
+          create: {
+            grade
+          }
+        }
+      },
+      where: {
+        title
+      },
+      include: {
+        actors: true,
+        votes: true
+      }
+    })
+    return updatedMovie
   }
 }

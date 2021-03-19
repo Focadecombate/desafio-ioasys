@@ -1,10 +1,10 @@
-import { Actor, MovieModel } from '../models/movie'
+import { MovieModel } from '../models/movie'
 
 export interface ListMoviesModel {
   title?: string,
   genre?: string,
   diretor?: string,
-  actors?: Actor[]
+  actors?: string[]
 }
 
 export interface ListMovies {

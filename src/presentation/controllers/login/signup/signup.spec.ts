@@ -25,7 +25,7 @@ const makeFakeAccount = (): AccountModel => ({
   password: 'valid_password',
   id: 'valid_id',
   isActive: true,
-  isAdmin: false
+  role: 'user'
 })
 const makeValidationStub = (): Validation => {
   class ValidationStub implements Validation {

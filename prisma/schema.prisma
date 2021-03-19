@@ -14,7 +14,7 @@ model Movie {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
+  title     String   @unique @db.VarChar(255)
   diretor   String
   genre     String
   votes     Vote?
@@ -32,7 +32,7 @@ model Vote {
   id     String @id @default(uuid())
   user   Movie  @relation(fields: [userId], references: [id])
   userId String
-  grade  BigInt
+  grade  Int
 }
 
 model User {

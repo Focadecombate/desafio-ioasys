@@ -45,7 +45,6 @@ export class SignupController implements Controller<{ accessToken: string }> {
         body: { accessToken }
       }
     } catch (error) {
-      console.log(error)
       return serverError(error)
     }
   }
