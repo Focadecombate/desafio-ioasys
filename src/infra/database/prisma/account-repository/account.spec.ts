@@ -69,5 +69,25 @@ describe('', () => {
       expect(account.email).toBe('any_email@mail.com')
       expect(account.password).toBe('hash_password')
     })
+    test('should return an account on loadByToken with role', async () => {
+      const sut = new AccountPrismaRepository()
+      await prismaHelper.prismaClient.user.create({
+        data: {
+          email: 'any_email@mail.com',
+          name: 'any_name',
+          password: 'hash_password',
+          id: 'any_token',
+          role: 'any_role'
+        }
+      })
+      const account = await sut.loadByToken('any_token', 'any_role')
+
+      expect(account).toBeTruthy()
+      expect(account.id).toBeTruthy()
+      expect(account.name).toBe('any_name')
+      expect(account.role).toBe('any_role')
+      expect(account.email).toBe('any_email@mail.com')
+      expect(account.password).toBe('hash_password')
+    })
   })
 })
