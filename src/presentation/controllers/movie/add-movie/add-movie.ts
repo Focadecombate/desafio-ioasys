@@ -1,5 +1,5 @@
 import { Controller, HttpRequest, HttpResponse, Validation, AddMovie } from './add-movie-controller-protocols'
-import { badRequest, ok, serverError } from '../../login/signup/signup-protocols'
+import { badRequest, noContent, serverError } from '../../login/signup/signup-protocols'
 import { AddMovieDTO } from './add-movie.dto'
 export class AddMovieController implements Controller<any> {
   constructor (
@@ -20,7 +20,7 @@ export class AddMovieController implements Controller<any> {
         published,
         title
       })
-      return ok({})
+      return noContent()
     } catch (error) {
       return serverError(error)
     }

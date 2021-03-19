@@ -1,5 +1,5 @@
 import { HttpRequest, AddMovie, AddMovieModel, Validation } from './add-movie-controller-protocols'
-import { badRequest, serverError } from '../../login/signup/signup-protocols'
+import { badRequest, noContent, serverError } from '../../login/signup/signup-protocols'
 import { AddMovieController } from './add-movie'
 
 const makeFakeRequest = (): HttpRequest => ({
@@ -65,5 +65,10 @@ describe('Add Movie Controller', () => {
 
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError(new Error('')))
+  })
+  test('should return 400 if validations fails', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(noContent())
   })
 })
