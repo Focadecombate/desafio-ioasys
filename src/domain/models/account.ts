@@ -3,6 +3,6 @@ export interface AccountModel {
   email: string
   password: string
   id: string
-  isAdmin: Boolean
+  role: string
   isActive: Boolean
 }
