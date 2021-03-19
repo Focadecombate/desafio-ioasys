@@ -1,6 +1,6 @@
-import { DbAuthentication } from '../../../../data/usecases/authenticate/db-authentication'
-import { JwtAdapter } from '../../../../infra/cryptography/jwt/jwtAdapter'
-import { AccountPrismaRepository, BcryptAdapter } from '../../controllers/login/protocols/login-protocols'
+import { DbAuthentication } from '../../../../../data/usecases/authenticate/db-authentication'
+import { JwtAdapter } from '../../../../../infra/cryptography/jwt/jwtAdapter'
+import { AccountPrismaRepository, BcryptAdapter } from '../../../controllers/login/login/protocols/login-protocols'
 
 export const makeDbAuthentication = (): DbAuthentication => {
   const accountRepository = new AccountPrismaRepository()

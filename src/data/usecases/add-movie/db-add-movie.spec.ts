@@ -1,11 +1,11 @@
-import { AddMovieModel, AddMovieRepository } from './db-add-account-protocols'
+import { AddMovieModel, AddMovieRepository } from './db-add-movie-protocols'
 import { DbAddMovie } from './db-add-movie'
 
 const makeFakeMovieData = (): AddMovieModel => ({
   title: 'any_title',
-  description: 'any_description',
-  published: false,
-  authorName: 'any_author'
+  diretor: 'any_description',
+  genre: 'any_genre',
+  actors: [{ name: 'any_actor' }]
 })
 const makeMovieRepositoryStub = (): AddMovieRepository => {
   class AddMovieRepositoryStub implements AddMovieRepository {

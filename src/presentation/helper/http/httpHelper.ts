@@ -32,7 +32,7 @@ export const ok = <T>(data: T): HttpResponse<T> => (
 )
 export const noContent = (): HttpResponse<null> => (
   {
-    statusCode: 200,
+    statusCode: 204,
     body: null
   }
 )

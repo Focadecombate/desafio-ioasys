@@ -13,11 +13,11 @@ export class AddMovieController implements Controller<any> {
       if (error) {
         return badRequest(error)
       }
-      const { authorName, description, published, title } = httpRequest.body as AddMovieDTO
+      const { actors, diretor, genre, title } = httpRequest.body as AddMovieDTO
       await this.addMovie.add({
-        authorName,
-        description,
-        published,
+        actors,
+        diretor,
+        genre,
         title
       })
       return noContent()

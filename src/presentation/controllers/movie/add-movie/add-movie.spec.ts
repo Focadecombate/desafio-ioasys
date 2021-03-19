@@ -5,9 +5,9 @@ import { AddMovieController } from './add-movie'
 const makeFakeRequest = (): HttpRequest => ({
   body: {
     title: 'any_title',
-    description: 'any_description',
-    published: false,
-    authorName: 'any_author'
+    diretor: 'any_description',
+    genre: 'any_genre',
+    actors: [{ name: 'any_actor' }]
   }
 })
 const makeValidatorStub = (): Validation => {

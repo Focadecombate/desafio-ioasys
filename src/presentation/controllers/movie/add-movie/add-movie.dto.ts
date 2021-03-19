@@ -1,6 +1,8 @@
+import { Actor } from './add-movie-controller-protocols'
+
 export interface AddMovieDTO {
   title: string,
-  description: string,
-  published: false,
-  authorName: string
+  genre: string,
+  diretor: string,
+  actors: Actor[]
 }

@@ -1,8 +1,11 @@
+export interface Actor {
+  name: string
+}
 export interface AddMovieModel {
   title: string,
-  description: string,
-  published: false,
-  authorName: string
+  genre: string,
+  diretor: string,
+  actors: Actor[]
 }
 
 export interface AddMovie {

@@ -1,4 +1,4 @@
-import { AccountPrismaRepository, BcryptAdapter, DbAddAccount } from '../../controllers/signup/protocols/signup-protocols'
+import { AccountPrismaRepository, BcryptAdapter, DbAddAccount } from '../../../controllers/login/signup/protocols/signup-protocols'
 
 export const makeAddAccount = () => {
   const salt = 12
