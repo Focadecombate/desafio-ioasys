@@ -8,7 +8,7 @@ const makeFakeAccount = (): AccountModel => ({
   name: 'any_name',
   email: 'any_email',
   isActive: true,
-  isAdmin: false,
+  role: 'user',
   password: 'hashed_password'
 })
 const makeDecryperStub = (): Decrypter => {

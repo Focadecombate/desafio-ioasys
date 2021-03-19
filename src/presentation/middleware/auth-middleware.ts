@@ -13,12 +13,15 @@ export class AuthMiddleware implements Middleware {
       const accessToken = httpRequest.headers?.authorization
       if (accessToken) {
         const account = await this.loadAccountByToken.load(accessToken, this.role)
+
         if (account) {
           return ok({ userId: account.id })
         }
       }
       return forbidden(new AccessDenied())
     } catch (error) {
+      console.log(error)
+
       return serverError(new ServerError(''))
     }
   }

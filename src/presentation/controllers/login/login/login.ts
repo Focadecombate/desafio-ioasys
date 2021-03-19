@@ -22,7 +22,7 @@ export class LoginController implements Controller<{ accessToken: string }> {
         return unauthorized()
       }
 
-      return ok({ accessToken })
+      return ok({ accessToken: `bearer ${accessToken}` })
     } catch (error) {
       return serverError(error)
     }

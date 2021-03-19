@@ -87,7 +87,7 @@ describe('Login Controller', () => {
     const { sut } = makeSut()
 
     const httpResponse = await sut.handle(makeFakeHttpRequest())
-    expect(httpResponse).toEqual(ok({ accessToken: 'token' }))
+    expect(httpResponse).toEqual(ok({ accessToken: 'bearer token' }))
   })
   test('should return 500 if authenticationStub throws', async () => {
     const { sut, authenticationStub } = makeSut()
