@@ -1,4 +1,4 @@
-import { forbidden } from '../helper/http/httpHelper'
+import { forbidden, ok } from '../helper/http/httpHelper'
 import { AccessDenied } from '../errors'
 import { AuthMiddleware } from './auth-middleware'
 import { LoadAccountByToken } from '../../domain/usecases/load-account-by-token'
@@ -52,5 +52,10 @@ describe('Auth Middleware', () => {
       .mockResolvedValueOnce(new Promise(resolve => resolve(null)))
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(forbidden(new AccessDenied()))
+  })
+  test('should return 200 if LoadAccountByToken returns an account', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(ok({ userId: makeFakeAccount().id }))
   })
 })
