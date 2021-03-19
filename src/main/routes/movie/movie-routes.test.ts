@@ -13,7 +13,7 @@ describe('Movie Routes', () => {
   })
 
   describe('POST /movie', () => {
-    test('should return 204 on movie', async () => {
+    test('should return 403 on movie', async () => {
       await request(app)
         .post('/api/movie')
         .send({
@@ -22,7 +22,7 @@ describe('Movie Routes', () => {
           actors: [{ name: 'any_actor_name' }],
           diretor: 'any_director'
         })
-        .expect(204)
+        .expect(403)
     })
   })
 })
