@@ -89,5 +89,11 @@ describe('', () => {
       expect(account.email).toBe('any_email@mail.com')
       expect(account.password).toBe('hash_password')
     })
+    test('should return null if loadByToken fails', async () => {
+      const sut = new AccountPrismaRepository()
+      const account = await sut.loadByToken('any_token', 'any_role')
+
+      expect(account).toBeFalsy()
+    })
   })
 })
