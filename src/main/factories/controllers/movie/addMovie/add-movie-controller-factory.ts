@@ -1,4 +1,4 @@
-import { AddMovieController } from '../../../../../presentation/controllers/movie/add-movie/add-movie'
+import { AddMovieController } from '../../../../../presentation/controllers/movie/add/add-movie'
 import { makeLogDecorator } from '../../../decorators/log-factory'
 import { makeDbMovie } from '../../../useCases/movie/add-movie/db-add-movie-factory'
 import { Controller } from '../../login/signup/protocols/signup-protocols'

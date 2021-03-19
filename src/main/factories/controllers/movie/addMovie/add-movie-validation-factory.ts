@@ -1,4 +1,4 @@
-import { AddMovieDTO } from '../../../../../presentation/controllers/movie/add-movie/add-movie.dto'
+import { AddMovieDTO } from '../../../../../presentation/controllers/movie/add/add-movie.dto'
 import { RequiredFieldValidation, Validation, ValidationComposite } from '../../login/signup/protocols/signup-validation-protocol'
 
 export const makeAddMovieValidation = (): ValidationComposite => {
