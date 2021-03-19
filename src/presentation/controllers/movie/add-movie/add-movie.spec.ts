@@ -1,5 +1,5 @@
 import { HttpRequest, AddMovie, AddMovieModel, Validation } from './add-movie-controller-protocols'
-import { badRequest } from '../../login/signup/signup-protocols'
+import { badRequest, serverError } from '../../login/signup/signup-protocols'
 import { AddMovieController } from './add-movie'
 
 const makeFakeRequest = (): HttpRequest => ({
@@ -54,5 +54,16 @@ describe('Add Movie Controller', () => {
     const addSpy = jest.spyOn(addMovieStub, 'add')
     await sut.handle(makeFakeRequest())
     expect(addSpy).toHaveBeenCalledWith(makeFakeRequest().body)
+  })
+  test('should return 500 if addMovie throws', async () => {
+    const { sut, addMovieStub } = makeSut()
+
+    jest.spyOn(addMovieStub, 'add')
+      .mockReturnValueOnce(
+        new Promise((resolve, reject) => reject(new Error('')))
+      )
+
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(serverError(new Error('')))
   })
 })
